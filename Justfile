@@ -7,7 +7,7 @@ cargo_run_args := env_var_or_default("CARGO_RUN_ARGS", "")
 build_mode := env_var_or_default("BUILD_MODE", "debug")
 build_mode_cargo_args := if build_mode == "release" { "--release" } else { "" }
 
-@default:
+@_default:
     {{just}} --list
 
 # Format project code
