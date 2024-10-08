@@ -1,0 +1,47 @@
+[package]
+name = "ipc-benchmark"
+version = "0.1.0"
+edition = "2021"
+description = """
+This crate includes the types and child binaries along with tests to IPC in Rust (via realistic IPC libs)
+"""
+
+[[bin]]
+path = "src/bin/ipcc-child.rs"
+name = "ipcc-child"
+
+[[bin]]
+path = "src/bin/ipcc.rs"
+name = "ipcc"
+
+[[bin]]
+path = "src/bin/shmem-raw-sync-child.rs"
+name = "shmem-raw-sync-child"
+
+[[bin]]
+path = "src/bin/shmem-raw-sync.rs"
+name = "shmem-raw-sync"
+
+[[bin]]
+path = "src/bin/shmem-shared-mem-queue-child.rs"
+name = "shmem-shared-mem-queue-child"
+
+[[bin]]
+path = "src/bin/shmem-shared-mem-queue.rs"
+name = "shmem-shared-mem-queue"
+
+[dependencies]
+anyhow = { workspace = true, features = [ "std" ] }
+bytes = { workspace = true, features = [ "std" ] }
+conv = { workspace = true }
+ipc-channel = { workspace = true }
+memmap = { workspace = true }
+serde = { workspace = true, features = [ "derive" ] }
+serde_json = { workspace = true, features = [ "std" ]}
+shared_memory = { workspace = true }
+raw_sync = { workspace = true }
+shared-mem-queue = { workspace = true }
+tempfile = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = [ "fmt", "ansi", "registry", "env-filter" ] }
+uuid = { workspace = true, features = [ "v7" ] }

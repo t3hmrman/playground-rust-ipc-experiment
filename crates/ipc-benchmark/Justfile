@@ -1,0 +1,44 @@
+just := env_var_or_default("JUST", just_executable())
+
+cargo := env_var_or_default("CARGO", "cargo")
+cargo_args := env_var_or_default("CARGO_ARGS", "")
+cargo_run_args := env_var_or_default("CARGO_RUN_ARGS", "")
+
+build_mode := env_var_or_default("BUILD_MODE", "debug")
+build_mode_cargo_args := if build_mode == "release" { "--release" } else { "" }
+
+ipcc_child_bin_path := env_var_or_default("IPCC_CHILD_BIN_PATH", join(justfile_directory(), "../../target/" + build_mode + "/ipcc-child"))
+
+shmem_shared_mem_queue_child_bin_path := env_var_or_default("SHARED_MEM_QUEUE_CHILD_BIN_PATH", join(justfile_directory(), "../../target/" + build_mode + "/shmem-shared-mem-queue-child"))
+
+shmem_raw_sync_child_bin_path := env_var_or_default("RAW_SYNC_CHILD_BIN_PATH", join(justfile_directory(), "../../target/" + build_mode + "/shmem-raw-sync-child"))
+
+@default:
+    {{just}} --list
+
+# Build various binaries
+@build:
+    echo "[info] building ipc-benchmarks project"
+    echo ""
+    {{cargo}} {{cargo_args}} build {{build_mode_cargo_args}}
+
+# Run the experimental IPC testing code (ipc-channel)
+@ipc-ipcc: build
+    echo "[info] running IPC testing code (bin/ipcc.rs)"
+    echo "[info] using IPCC_CHILD_BIN_PATH={{ipcc_child_bin_path}}"
+    echo ""
+    IPCC_CHILD_BIN_PATH={{ipcc_child_bin_path}} {{cargo}} {{cargo_args}} run {{cargo_run_args}} --bin ipcc {{build_mode_cargo_args}}
+
+# Run the experimental IPC testing code (shared-mem - shared-mem-queue)
+@ipc-shmem-shared-mem-queue: build
+    echo "[info] running shmem (shared-mem-queue) testing code (bin/shmem-shared-mem-queue.rs)"
+    echo "[info] using SHARED_MEM_QUEUE_CHILD_BIN_PATH={{shmem_shared_mem_queue_child_bin_path}}"
+    echo ""
+    SHARED_MEM_QUEUE_CHILD_BIN_PATH={{shmem_shared_mem_queue_child_bin_path}} {{cargo}} {{cargo_args}} run {{cargo_run_args}} --bin shmem-shared-mem-queue {{build_mode_cargo_args}}
+
+# Run the experimental IPC testing code (shared-mem - raw_sync)
+@ipc-shmem-raw-sync: build
+    echo "[info] running shmem (raw-sync) testing code (bin/shmem-raw-sync.rs)"
+    echo "[info] using RAW_SYNC_CHILD_BIN_PATH={{shmem_raw_sync_child_bin_path}}"
+    echo ""
+    RAW_SYNC_CHILD_BIN_PATH={{shmem_raw_sync_child_bin_path}} {{cargo}} {{cargo_args}} run {{cargo_run_args}} --bin shmem-raw-sync {{build_mode_cargo_args}}
