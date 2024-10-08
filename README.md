@@ -30,7 +30,7 @@ Average of 3 runs on a *mostly* quiet host, power profile set to "performance".
 <summary><h4>Raw Data</h4></summary>
 
 
-### DEBUG builds
+### Debug build
 
 | Method                               | Total roundtrips | Average Roundtrips per second per core |
 |--------------------------------------|------------------|----------------------------------------|
@@ -38,7 +38,7 @@ Average of 3 runs on a *mostly* quiet host, power profile set to "performance".
 | shared memory via `shared-mem-queue` | 43,171           | 4,317                                  |
 | shared memory via `raw-sync`         | 643,182.333      | 64,318.233                             |
 
-### Release builds
+### Release build
 
 | Method                               | Total roundtrips | Average Roundtrips per second per core |
 |--------------------------------------|------------------|----------------------------------------|
