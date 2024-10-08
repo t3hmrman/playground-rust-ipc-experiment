@@ -14,7 +14,9 @@ that might be used in a more realistic program than some of the examples above.
 
 The code is far from perfect! If you have a complaint -- file an (politely worded) issue, or even better submit a (graciously written) pull request.
 
-## Results
+[rust]: https://rust-lang.org
+
+## 📊 Results
 
 For those of us with other things to do today, here are the results on a couple machines.
 
@@ -91,8 +93,11 @@ Average of 3 runs on a *mostly* quiet host, while plugged in.
 
 > [!NOTE]
 > Yup, the 8C Macbook Air *was* faster than the 12C (somewhat old) Oryx Pro.
+>
+> Interestingly enough, shared-mem-queue performs more normally (an improvement over the much more ergonomic `ipc-channel`)
+> as expected, with no code-changes.
 
-## Context
+## 📜 Context
 
 This repository contains a playground project I tinkered with recently which explores high performance [Inter-Process Communication ("IPC")][wiki-ipc] on Rust.
 
@@ -137,7 +142,7 @@ So my contribution to the discussion is to write *slightly* more realistic code 
 [wiki-localhost]: https://en.wikipedia.org/wiki/Localhost
 [wiki-shmem]: https://en.wikipedia.org/wiki/Shared_memory
 
-## Quickstart
+## 👟 Run it yourself
 
 ### Dependencies
 
@@ -151,6 +156,7 @@ To run the code in here, you'll need the following:
 
 [just]: https://github.com/casey/just
 [rustup]: https://www.rust-lang.org/tools/install
+[cargo]: https://doc.rust-lang.org/cargo/
 [gnu-make]: https://www.gnu.org/software/make/
 
 ### Build
@@ -166,22 +172,9 @@ just build
 >
 > In this project, the default target is set up such that you can also run `just` with no arguments.
 
-### Benchmark
+### Run
 
-To build the code for this project:
-
-```console
-just build
-```
-
-> [!NOTE]
-> If you want to see all the targets available with `just`, run `just --list`
->
-> In this project, the default target is set up such that you can also run `just` with no arguments.
-
-You can run *each* the benchmarks by using `just` targets.
-
-To run the experiment using [`ipc-channel`][crates-ipc-channel]
+To run the experiment using [`ipc-channel`][crates-ipc-channel]:
 
 ```
 just ipc-ipcc
@@ -203,13 +196,13 @@ You should see output like the following:
 completed [119831] ping-pong round-trips [10] seconds ([11983.1] round-trips/second)
 ```
 
-To run the experiment using [`shared-mem-queue`][crates-shared-mem-queue]
+Similarly, to run the experiment using [`shared-mem-queue`][crates-shared-mem-queue]:
 
 ```console
 just ipc-shmem-shared-mem-queue
 ```
 
-To run the experiments using [`raw-sync`][crates-raw-sync]
+For [`raw-sync`][crates-raw-sync], run:
 
 ```console
 ipc-shmem-raw-sync
