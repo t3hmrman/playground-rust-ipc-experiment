@@ -27,7 +27,7 @@ Average of 3 runs on a *mostly* quiet host, power profile set to "performance".
 ![2019 Oryx Pro Release build performance chart](./docs/images/oryxpro-release-roundtrips-per-second-plotly.png)
 
 <details>
-<summary><h4>Raw Data</h4></summary>
+<summary><h4>🔢 Raw Data</h4></summary>
 
 
 ### Debug build
@@ -58,9 +58,36 @@ Average of 3 runs on a *mostly* quiet host, power profile set to "performance".
 >
 > Probably due to the weird memory requirements that seemed neccessary
 
-### On a Macbook Air (8C Macbook Air)
+### On a 2022 Macbook Air (M2 8C)
 
-(( TODO ))
+Average of 3 runs on a *mostly* quiet host, while plugged in.
+
+
+![2022 Macbook Air M2 Debug build performance chart](./docs/images/macair-debug-roundtrips-per-second-plotly.png)
+
+![2022 Macbook Air M2 Release build performance chart](./docs/images/macair-release-roundtrips-per-second-plotly.png)
+
+<details>
+<summary><h4>🔢 Raw Data</h4></summary>
+
+
+### Debug build
+
+| Method                               | Total roundtrips | Roundtrips per second per core |
+|--------------------------------------|------------------|--------------------------------|
+| `ipc-channel`                        | 175,545          | 17,554                         |
+| shared memory via `shared-mem-queue` | 339,835          | 33,983                         |
+| shared memory via `raw-sync`         | 747,685          | 74,768                         |
+
+### Release build
+
+| Method                               | Total roundtrips | Average Roundtrips per second per core |
+|--------------------------------------|------------------|----------------------------------------|
+| `ipc-channel`                        | 1,431,233        | 143,123                                |
+| shared memory via `shared-mem-queue` | 583,071          | 58,307                                 |
+| shared memory via `raw-sync`         | 11,474,148.666   | 1,147,414.866                          |
+
+</details>
 
 > [!NOTE]
 > Yup, the 8C Macbook Air *was* faster than the 12C (somewhat old) Oryx Pro.
