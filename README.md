@@ -8,13 +8,55 @@ This Repository was inspired by the following excellent resources built by the c
 - https://ekxide.io/blog/iceoryx2-0-4-release/
 - https://pranitha.rs/posts/rust-ipc-ping-pong/
 
+While these benchmarks have not been optimized, they represent a *slightly* more realistic workload
+than sending `"ping"` and `"pong"`, and include ergonomics to make sending easier along with abstraction
+that might be used in a more realistic program than some of the examples above.
+
+The code is far from perfect! If you have a complaint -- file an (politely worded) issue, or even better submit a (graciously written) pull request.
+
 ## Results
 
 For those of us with other things to do today, here are the results on a couple machines.
 
 ### On a 2019 Oryx Pro 5 (Intel i7-9750H 12C @ 4.5Ghz)
 
-(( TODO ))
+Average of 3 runs on a *mostly* quiet host, power profile set to "performance".
+
+![2019 Oryx Pro Debug build performance chart](./docs/images/oryxpro-debug-roundtrips-per-second-plotly.png)
+
+![2019 Oryx Pro Release build performance chart](./docs/images/oryxpro-release-roundtrips-per-second-plotly.png)
+
+<details>
+<summary><h4>Raw Data</h4></summary>
+
+
+### DEBUG builds
+
+| Method                               | Total roundtrips | Average Roundtrips per second per core |
+|--------------------------------------|------------------|----------------------------------------|
+| `ipc-channel`                        | 122,611          | 12,261.1333                            |
+| shared memory via `shared-mem-queue` | 43,171           | 4,317                                  |
+| shared memory via `raw-sync`         | 643,182.333      | 64,318.233                             |
+
+### Release builds
+
+| Method                               | Total roundtrips | Average Roundtrips per second per core |
+|--------------------------------------|------------------|----------------------------------------|
+| `ipc-channel`                        | 1,119,410        | 111,941                                |
+| shared memory via `shared-mem-queue` | 47,596           | 4,759                                  |
+| shared memory via `raw-sync`         | 8,307,083        | 830,708.3                              |
+
+
+</details>
+
+> [!NOTE]
+> Yes, something is wrong with the results for `shared-mem-queue`, I must be holding it wrong somehow.
+> No meaningful difference between debug and release is *very very odd*.
+>
+> That said, that is reflective of DX and is worth including. If it's easy to misuse your library,
+> then it's easy to get substandard results.
+>
+> Probably due to the weird memory requirements that seemed neccessary
 
 ### On a Macbook Air (8C Macbook Air)
 
@@ -180,6 +222,10 @@ If you see bugs, or want to expand this experiment, please [file an issue][issue
 
 There's a lot left to be done for this benchmark to be conclusive/a good pointer in the general case. Here are some things you could contribute:
 
+- Fix the absurd memory requirements of the `shared-mem-queue` approach
+- JSON output for test (parent) binaries
+- Automatic graph generation
+- More efficient testing (`divan` once it has JSON output support? `criterion`?)
 - TCP (loopback) implementation
 - UDP (loopback) implementation
 - UDP (domain socket) implementation
